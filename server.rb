@@ -23,7 +23,7 @@ class IssueShadower < Sinatra::Base
   end
 
   def repo
-    payload["repository"]["fullname"]
+    payload["repository"]["full_name"]
   end
 
   def issue
