@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'octokit'
+require 'json'
 
 class IssueShadower < Sinatra::Base
   def client
@@ -22,16 +23,18 @@ class IssueShadower < Sinatra::Base
   end
 
   def repo
-    payload["repository"]["fullname"]
+    payload["repository"]["full_name"]
   end
 
   def issue
-    client.issue repo, payload["issue"]["number"]
+    # client.issue repo, payload["issue"]["number"]
+    payload["issue"]
   end
 
   post "/payload" do
     halt 409 unless signature_valid?
     halt 200 unless issue && payload["action"] == "opened"
-    client.create_issue repo, issue.title, "Shaddow issue for #{issue.html_url}\n---\n" + issue.body
+    client.create_issue repo, issue["title"], "Shaddow issue for #{issue['html_url']}\n---\n" + issue["body"]
+    halt 201
   end
 end
