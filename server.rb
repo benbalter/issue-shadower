@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'octokit'
+require 'json'
 
 class IssueShadower < Sinatra::Base
   def client
